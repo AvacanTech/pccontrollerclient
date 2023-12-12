@@ -21,9 +21,10 @@ void main(List<String> arguments) async {
   var handler = webSocketHandler((webSocket) async {
     webSocket.stream.listen((message) async {
       webSocket.sink.add("echo $message");
-      var shell = Shell();
+      //var shell = Shell();
       
       print(message.toString());
+      /*
       List<ProcessResult> result = await shell.run('''
         $message
       ''');
@@ -31,7 +32,7 @@ void main(List<String> arguments) async {
       for (ProcessResult element in result) {
         print(element.outText);
       }
-
+      */
     });
   });
   /*
