@@ -31,12 +31,48 @@ void main(List<String> arguments) async {
       for (ProcessResult element in result) {
         print(element.outText);
       }
-      
+
     });
   });
+
+  print('Enter server IP Address: ');
+  String? name = stdin.readLineSync();
+
+
+
+  if (isValidIpAddress(ipAddress)) {
+    final WebSocket socket = await WebSocket.connect(ipAddress);
+    String hostName = Platform.localHostname;
+    socket.add('Serving $hostName at ${name!}');
+  } 
+
 
   shelf_io.serve(handler, ipAddress, 4040).then((server) {
     print('Serving at ws://${server.address.host}:${server.port}');
   });
 
+}
+
+
+
+bool isValidIpAddress(String ipa) {
+  final RegExp ipRegExp = RegExp(r'^(\d{1,3}\.){3}\d{1,3}$');
+
+  if (!ipRegExp.hasMatch(ipa)) {
+    return false; // Doesn't match the basic format of "X.X.X.X"
+  }
+
+  final parts = ipa.split('.');
+  if (parts.length != 4) {
+    return false; // IP address should have exactly 4 parts
+  }
+
+  for (var part in parts) {
+    final int value = int.tryParse(part)!;
+    if (value < 0 || value > 255) {
+      return false; // Each part should be a number between 0 and 255
+    }
+  }
+
+  return true;
 }
