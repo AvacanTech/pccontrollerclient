@@ -20,7 +20,7 @@ void main(List<String> arguments) async {
   // Set behavior performed upon reciept of a socket message
   var handler = webSocketHandler((webSocket) async {
     webSocket.stream.listen((message) async {
-      webSocket.sink.add("echo $message");
+      
       var shell = Shell();
       
       print(message.toString());
@@ -28,9 +28,10 @@ void main(List<String> arguments) async {
       List<ProcessResult> result = await shell.run('''
         $message
       ''');
-
+      webSocket.sink.add(message);
       for (ProcessResult element in result) {
         print(element.outText);
+        webSocket.sink.add(element.outText);
       }
 
     });
