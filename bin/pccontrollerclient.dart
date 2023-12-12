@@ -17,6 +17,7 @@ void main(List<String> arguments) async {
     }
   }
 
+  String kickBackMessage = '';
   // Set behavior performed upon reciept of a socket message
   var handler = webSocketHandler((webSocket) async {
     webSocket.stream.listen((message) async {
@@ -28,11 +29,13 @@ void main(List<String> arguments) async {
       List<ProcessResult> result = await shell.run('''
         $message
       ''');
-      webSocket.sink.add(message);
+      kickBackMessage = message + ':\n';
       for (ProcessResult element in result) {
         print(element.outText);
-        webSocket.sink.add(element.outText);
+        kickBackMessage += element.outText + '\n';
       }
+
+      webSocket.sink.add(kickBackMessage);
 
     });
   });
