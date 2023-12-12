@@ -34,7 +34,7 @@ void main(List<String> arguments) async {
 
     });
   });
-
+  /*
   print('Enter server IP Address: ');
   String? name = stdin.readLineSync();
 
@@ -45,6 +45,7 @@ void main(List<String> arguments) async {
     String hostName = Platform.localHostname;
     socket.add('Serving $hostName at ${name!}');
   } 
+  */
 
 
   shelf_io.serve(handler, ipAddress, 4040).then((server) {
